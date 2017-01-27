@@ -1,0 +1,5 @@
+rootProject.name = 'spring-boot-vs-spring'
+
+include("common")
+include("jeff")
+include("jim")

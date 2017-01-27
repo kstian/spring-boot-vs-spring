@@ -1,0 +1,46 @@
+group 'com.github.ktarou.blogs'
+version '1.0-SNAPSHOT'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies{
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.3.RELEASE")
+    }
+}
+subprojects{
+    apply plugin: 'java'
+    sourceCompatibility = 1.8
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.11'
+    }
+}
+project(":common"){
+    apply plugin: "org.springframework.boot"
+    dependencies{
+        compile "org.springframework:spring-context"
+    }
+}
+project(":jeff"){
+    apply plugin: "org.springframework.boot"
+    dependencies{
+        compile project(":common")
+        compile "org.springframework.boot:spring-boot-starter"
+    }
+}
+project(":jim"){
+    apply plugin: "org.springframework.boot" // only to grab spring libraries
+    dependencies{
+        compile project(":common")
+        compile "org.springframework:spring-context"
+        compile "ch.qos.logback:logback-classic"
+        compile "org.slf4j:jcl-over-slf4j"
+    }
+}
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.3'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
