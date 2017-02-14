@@ -29,6 +29,8 @@ project(":jeff"){
     dependencies{
         compile project(":common")
         compile "org.springframework.boot:spring-boot-starter"
+        compile "org.springframework:spring-jdbc"
+        compile "org.hsqldb:hsqldb:2.3.4"
     }
 }
 project(":jim"){
@@ -36,8 +38,10 @@ project(":jim"){
     dependencies{
         compile project(":common")
         compile "org.springframework:spring-context"
+        compile "org.springframework:spring-jdbc"
         compile "ch.qos.logback:logback-classic"
         compile "org.slf4j:jcl-over-slf4j"
+        compile "org.hsqldb:hsqldb:2.3.4"
     }
 }
 task wrapper(type: Wrapper) {

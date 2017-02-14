@@ -1,3 +1,4 @@
+You might already used spring-boot in your project and you are happy with it. But did you really know how spring-boot works? Can you explain the difference with spring?
 Some of my colleagues asked me what is spring-boot and what are the difference with spring.
 This question also asked by some of them who already used spring in their projects. I told them
 Spring-boot is just Spring with extra magics. To understand how the magics work,
@@ -54,5 +55,41 @@ public class Application implements ApplicationRunner{
 
 interface ApplicationRunner{
     void run(String... args);
+}
+```
+
+As we can see, Jeff's code is simpler that Jim's. But if you take a look closely, Jeff's code explain how spring-boot works.
+ - The annotations `@Configuration` and `@ComponentScan` is not necessary in spring-boot because they already part of `@SpringBootApplication` annotation.
+ - Jim's have to configure the application context manually which is automatically configured in spring-boot.
+ - The interface `ApplicationRunner` is a bean type to mark a bean that should be executed by spring. It's similar with interface `CommandLineRunner` in spring-boot.
+
+The next week they were assigned to retrieve data from database for the report. In this case they both used embedded database. Here are their codes
+
+Jeff's Code:
+```
+@Autowired
+JdbcTemplate jdbcTemplate;
+
+@Override
+public void run(String... args) throws Exception {
+    List<String> datas = jdbcTemplate.query("SELECT name FROM employee", (rs, rowNum) -> rs.getString("name"));
+    reportWriter.write(datas);
+}
+```
+Jim's code:
+```
+@Autowired
+JdbcTemplate jdbcTemplate;
+
+@Override
+public void run(String... args) {
+    List<String> datas = Arrays.asList("Data1", "Data2", "Data3");
+    reportWriter.write(datas);
+}
+
+@Bean
+public JdbcTemplate jdbcTemplate(){
+    DataSource dataSource = new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL).build();
+    return new JdbcTemplate(dataSource);
 }
 ```
